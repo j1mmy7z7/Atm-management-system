@@ -33,6 +33,38 @@ void loginMenu(char a[50], char pass[50])
     }
 };
 
+void registerUser(char a[50], char pass[50]) 
+{
+    system("clear");
+    printf("\n\n\n\t\t\t\t   Bank Management System\n\t\t\t\t\t UserName:");
+    scanf("%s", a);
+    printf("\n\n\n\n\n\t\t\t\tEnter the password to login:");
+    scanf("%s", pass);
+}
+
+const char *getUserName(struct User u)
+{
+    FILE *fp;
+    struct User userChecker;
+
+    if ((fp = fopen("./data/users.txt", "r")) == NULL)
+    {
+        printf("Error! opening the file");
+        exit(1);
+    }
+
+    while (fscanf(fp, "%s", userChecker.name) != EOF)
+    {
+        if (strcmp(userChecker.name, u.name) == 0) {
+            fclose(fp);
+            char *buff = userChecker.name;
+            return buff;
+        }
+    }
+    fclose(fp);
+    return "no user found";
+}
+
 const char *getPassword(struct User u)
 {
     FILE *fp;
