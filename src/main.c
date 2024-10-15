@@ -83,6 +83,12 @@ void initMenu(struct User *u)
         case 2:
             // student TODO : add your **Registration** function
             // here
+            registerUser(u->name, u->password);
+            if (strcmp(u->name, getUserName(*u)) == 0) {
+                printf("\n\nUser name already taken\n");
+                exit(1);
+            }
+            //TODO: write new user to the file
             r = 1;
             break;
         case 3:
