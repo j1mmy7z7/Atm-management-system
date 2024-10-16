@@ -50,20 +50,21 @@ void registerUser(char a[50], char pass[50])
 const char *getUserName(struct User u)
 {
     FILE *fp;
-    struct User userChecker;
+    char data[256];
 
-    if ((fp = fopen("./data/users.txt", "r")) == NULL)
+    if ((fp = fopen(USERS, "r")) == NULL)
     {
         printf("Error! opening the file");
         exit(1);
     }
 
-    while (fscanf(fp, "%s", userChecker.name) != EOF)
+    while (fgets(data, sizeof(data), fp) != NULL)
     {
-        if (strcmp(userChecker.name, u.name) == 0) {
+        char* piece = strtok(data, " ");
+        piece = strtok(NULL, " ");
+        if (strcmp(piece, u.name)==0) {
             fclose(fp);
-            char *buff = userChecker.name;
-            return buff;
+            return piece;
         }
     }
     fclose(fp);
@@ -75,7 +76,7 @@ const char *getPassword(struct User u)
     FILE *fp;
     char data[256];
 
-    if ((fp = fopen("./data/users.txt", "r")) == NULL)
+    if ((fp = fopen(USERS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
