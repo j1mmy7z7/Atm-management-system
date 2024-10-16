@@ -65,6 +65,7 @@ void initMenu(struct User *u)
     while (!r)
     {
         scanf("%d", &option);
+        getchar();
         switch (option)
         {
         case 1:
