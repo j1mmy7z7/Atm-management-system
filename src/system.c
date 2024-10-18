@@ -156,7 +156,7 @@ void checkAllAccounts(struct User u)
     printf("\t\t====== All accounts from user, %s =====\n\n", u.name);
     while (getAccountFromFile(pf, &r))
     {
-        if (strcmp(userName, u.name) == 0)
+        if (strcmp(r.name, u.name) == 0)
         {
             printf("_____________________\n");
             printf("\nAccount number:%d\nDeposit Date:%d/%d/%d \ncountry:%s \nPhone number:%d \nAmount deposited: $%.2f \nType Of Account:%s\n",
