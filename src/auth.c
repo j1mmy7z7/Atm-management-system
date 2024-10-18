@@ -119,6 +119,35 @@ const int setId()
     return  count;   
 }
 
+const int getId(struct User u)
+{
+    FILE *fp;
+    char data[256];
+    char *initial;
+    int id;
+
+    if ((fp = fopen(USERS, "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
+
+    while (fgets(data,sizeof(data), fp ) != NULL)
+    {
+        char *piece = strtok(data, " ");
+        initial = piece;
+        piece = strtok(NULL, " ");
+        if (strcmp(u.name, piece) == 0)
+        {
+            id = atoi(initial);
+        }
+
+
+    }
+    fclose(fp);
+    return id;
+}
+
 void saveUser(struct User *u)
 {
     FILE *fp;

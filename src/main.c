@@ -73,6 +73,7 @@ void initMenu(struct User *u)
             if (strcmp(u->password, getPassword(*u)) == 0)
             {
                 printf("\n\nPassword Match!");
+                (*u).id = getId(*u);
             }
             else
             {
