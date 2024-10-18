@@ -101,6 +101,9 @@ void createNewAcc(struct User u)
     struct Record r;
     struct Record cr;
     char userName[50];
+    int count;
+    char c;
+
     FILE *pf = fopen(RECORDS, "a+");
     printf("%d", u.id);
 
@@ -108,6 +111,13 @@ noAccount:
     system("clear");
     printf("\t\t\t===== New record =====\n");
 
+    while ((c = fgetc(pf)) != EOF) {
+        if (c == '\n') {
+            count++;
+        }
+    }
+    rewind(pf);
+    r.id = count/2;
     printf("\nEnter today's date(mm/dd/yyyy):");
     scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
     printf("\nEnter the account number:");
