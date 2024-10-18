@@ -22,7 +22,6 @@ void mainMenu(struct User u)
         createNewAcc(u);
         break;
     case 2:
-        // student TODO : add your **Update account information** function
         updateInfo(u);
         break;
     case 3:
@@ -37,8 +36,7 @@ void mainMenu(struct User u)
         // here
         break;
     case 6:
-        // student TODO : add your **Remove existing account** function
-        // here
+        removeAccount(u);
         break;
     case 7:
         // student TODO : add your **Transfer owner** function
@@ -83,14 +81,11 @@ void initMenu(struct User *u)
             r = 1;
             break;
         case 2:
-            // student TODO : add your **Registration** function
-            // here
             registerUser(u->name, u->password);
             if (strcmp(u->name, getUserName(*u)) == 0) {
                 printf("\n\nUser name already taken\n");
                 exit(1);
             }
-            //TODO: write new user to the file
             (*u).id = setId();
             saveUser(u);
             r = 1;
