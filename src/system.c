@@ -1,4 +1,5 @@
 #include "header.h"
+#include <string.h>
 
 const char *RECORDS = "./data/records.txt";
 
@@ -18,12 +19,12 @@ int getAccountFromFile(FILE *ptr, struct Record *r)
                   r->accountType) != EOF;
 }
 
-void saveAccountToFile(FILE *ptr, struct User *u, struct Record *r)
+void saveAccountToFile(FILE *ptr, struct Record *r)
 {
     fprintf(ptr, "%d %d %s %d %d/%d/%d %s %d %.2lf %s\n\n",
             r->id,
-	    u->id,
-	    u->name,
+	    r->userId,
+	    r->name,
             r->accountNbr,
             r->deposit.month,
             r->deposit.day,
@@ -138,8 +139,10 @@ noAccount:
     scanf("%lf", &r.amount);
     printf("\nChoose the type of account:\n\t-> saving\n\t-> current\n\t-> fixed01(for 1 year)\n\t-> fixed02(for 2 years)\n\t-> fixed03(for 3 years)\n\n\tEnter your choice:");
     scanf("%s", r.accountType);
+    r.userId = u.id;
+    strcpy(r.name ,u.name);
 
-    saveAccountToFile(pf, &u, &r);
+    saveAccountToFile(pf, &r);
 
     fclose(pf);
     success(u);
@@ -176,16 +179,38 @@ void checkAllAccounts(struct User u)
 
 void updateInfo(struct User u)
 {
+    struct Record cr;
+    int account;
+    int checker = 0;
+    int phone = 0;
+    char country[100];
     int number;
+    FILE *curr, *temp;
+    temp = fopen("./data/temp.txt", "w");
+    curr = fopen(RECORDS, "r");
+
     system("clear");
-    struct Record checker;
-
-    FILE *pf = 
-
-
+noAccount:
     printf("\t\t What is the account number you want to change ?\n");
-    scanf("%d",&number);
-    //add check for existing account
+    scanf("%d",&account);
+    
+    while (getAccountFromFile(curr, &cr))
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            checker = 1;
+        }
+    }
+    
+    rewind(curr);
+    if (checker == 0)
+    {
+    printf("✖ This is no account of this record\n\n");
+            goto noAccount;
+
+    }
+
+    
     printf("\tWhich information do you want?\n ");
     printf("\t 1-> phone number\n");
     printf("\t 2-> country\n");
@@ -194,15 +219,35 @@ void updateInfo(struct User u)
     switch (number)
     {
     case 1:
-        printf("you chose phone");
+        printf("Enter your new phone number: ");
+        scanf("%d", &phone);
         break;
     case 2:
-        printf("you chose two");
+        printf("Enter your new country: ");
+        scanf("%s", country);
         break;
     default:
-        printf("choose a better option");
+        printf("choose either 1 or 2");
         break;
     }
+
+    while (getAccountFromFile(curr, &cr))
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            if(phone == 0) {
+                strcpy(cr.country, country);
+            } else {
+                cr.phone = phone;
+            }
+        }
+        saveAccountToFile(temp, &cr);
+    }
+       
+    fclose(curr);
+    fclose(temp);
+    remove(RECORDS);
+    rename("./data/temp.txt", RECORDS);
 
     success(u);
 }
