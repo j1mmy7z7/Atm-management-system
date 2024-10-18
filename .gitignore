@@ -1,4 +1,3 @@
 #ignore specific files
 
-data/users.txt
-data/records.txt
+/data
