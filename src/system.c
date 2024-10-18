@@ -102,22 +102,24 @@ void createNewAcc(struct User u)
     struct Record r;
     struct Record cr;
     char userName[50];
-    int count;
+    int count = 0;
     char c;
-
-    FILE *pf = fopen(RECORDS, "a+");
 
     system("clear");
 noAccount:
+    FILE *pf = fopen(RECORDS, "a+");
     printf("\t\t\t===== New record =====\n");
 
-    while ((c = fgetc(pf)) != EOF) {
-        if (c == '\n') {
-            count++;
+    while (getAccountFromFile(pf, &cr))
+    {
+        if (cr.id > count)
+        {
+            count = cr.id;
         }
     }
     rewind(pf);
-    r.id = count/2;
+    printf("%d", count);
+    r.id = count + 1;
     printf("\nEnter today's date(mm/dd/yyyy):");
     scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
     printf("\nEnter the account number:");
@@ -128,9 +130,11 @@ noAccount:
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
         {
             printf("✖ This Account already exists for this user\n\n");
+            fclose(pf);
             goto noAccount;
         }
     }
+    rewind(pf);
     printf("\nEnter the country:");
     scanf("%s", r.country);
     printf("\nEnter the phone number:");
@@ -186,11 +190,11 @@ void updateInfo(struct User u)
     char country[100];
     int number;
     FILE *curr, *temp;
-    temp = fopen("./data/temp.txt", "w");
-    curr = fopen(RECORDS, "r");
+    
 
     system("clear");
 noAccount:
+    curr = fopen(RECORDS, "r");
     printf("\t\t What is the account number you want to change ?\n");
     scanf("%d",&account);
     
@@ -199,18 +203,20 @@ noAccount:
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
         {
             checker = 1;
+            break;
         }
     }
     
     rewind(curr);
     if (checker == 0)
     {
-    printf("✖ This is no account of this record\n\n");
+    printf("✖ There is no account of this record\n\n");
+    fclose(curr);
             goto noAccount;
 
     }
 
-    
+    temp = fopen("./data/temp.txt", "w");
     printf("\tWhich information do you want?\n ");
     printf("\t 1-> phone number\n");
     printf("\t 2-> country\n");
@@ -249,5 +255,58 @@ noAccount:
     remove(RECORDS);
     rename("./data/temp.txt", RECORDS);
 
+    success(u);
+}
+
+void removeAccount(struct User u) 
+{
+    struct Record cr;
+    FILE *curr, *temp;
+    int checker = 0;
+    int account; 
+    system("clear");
+noAccount:
+    curr = fopen(RECORDS, "r");
+    printf("\t Enter the account you want to delete :");
+    scanf("%d", &account);
+
+    while (getAccountFromFile(curr, &cr))
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            checker = 1;
+            break;
+        }
+    }
+    
+    rewind(curr);
+    if (checker == 0)
+    {
+    printf("✖ There is no account of this record\n\n");
+        fclose(curr);
+        goto noAccount;
+
+    }
+    
+    temp = fopen("./data/temp.txt", "w");
+    checker = 0;
+    while (getAccountFromFile(curr, &cr))
+    {
+        if (checker == 1)
+        {
+            cr.id = cr.id - 1;
+        }
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            checker = 1;
+            continue;
+        }
+        saveAccountToFile(temp, &cr);
+    }
+       
+    fclose(curr);
+    fclose(temp);
+    remove(RECORDS);
+    rename("./data/temp.txt", RECORDS);
     success(u);
 }
