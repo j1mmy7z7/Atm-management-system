@@ -2,7 +2,7 @@
 
 const char *RECORDS = "./data/records.txt";
 
-int getAccountFromFile(FILE *ptr, char name[50], struct Record *r)
+int getAccountFromFile(FILE *ptr, struct Record *r)
 {
     return fscanf(ptr, "%d %d %s %d %d/%d/%d %s %d %lf %s",
                   &r->id,
@@ -105,10 +105,9 @@ void createNewAcc(struct User u)
     char c;
 
     FILE *pf = fopen(RECORDS, "a+");
-    printf("%d", u.id);
 
-noAccount:
     system("clear");
+noAccount:
     printf("\t\t\t===== New record =====\n");
 
     while ((c = fgetc(pf)) != EOF) {
@@ -123,9 +122,9 @@ noAccount:
     printf("\nEnter the account number:");
     scanf("%d", &r.accountNbr);
 
-    while (getAccountFromFile(pf, userName, &cr))
+    while (getAccountFromFile(pf, &cr))
     {
-        if (strcmp(userName, u.name) == 0 && cr.accountNbr == r.accountNbr)
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
         {
             printf("✖ This Account already exists for this user\n\n");
             goto noAccount;
@@ -155,7 +154,7 @@ void checkAllAccounts(struct User u)
 
     system("clear");
     printf("\t\t====== All accounts from user, %s =====\n\n", u.name);
-    while (getAccountFromFile(pf, userName, &r))
+    while (getAccountFromFile(pf, &r))
     {
         if (strcmp(userName, u.name) == 0)
         {
