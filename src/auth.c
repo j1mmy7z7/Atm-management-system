@@ -42,7 +42,7 @@ void registerUser(char a[50], char pass[50])
     printf("\n\n\n\t\t\t\t   Bank Management System\n\t\t\t\t\t UserName:");
     fgets(a,50,stdin);
     a[strcspn(a, "\n")] = 0;
-    printf("\n\n\n\n\n\t\t\t\tEnter the password to login:");
+    printf("\n\n\n\n\n\t\t\t\tEnter your password:");
     fgets(pass, 50,stdin);
     pass[strcspn(pass, "\n")] = 0;
 }
