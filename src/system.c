@@ -173,3 +173,36 @@ void checkAllAccounts(struct User u)
     fclose(pf);
     success(u);
 }
+
+void updateInfo(struct User u)
+{
+    int number;
+    system("clear");
+    struct Record checker;
+
+    FILE *pf = 
+
+
+    printf("\t\t What is the account number you want to change ?\n");
+    scanf("%d",&number);
+    //add check for existing account
+    printf("\tWhich information do you want?\n ");
+    printf("\t 1-> phone number\n");
+    printf("\t 2-> country\n");
+    scanf("%d", &number);
+
+    switch (number)
+    {
+    case 1:
+        printf("you chose phone");
+        break;
+    case 2:
+        printf("you chose two");
+        break;
+    default:
+        printf("choose a better option");
+        break;
+    }
+
+    success(u);
+}
