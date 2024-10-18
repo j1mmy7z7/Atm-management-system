@@ -102,6 +102,7 @@ void createNewAcc(struct User u)
     struct Record cr;
     char userName[50];
     FILE *pf = fopen(RECORDS, "a+");
+    printf("%d", u.id);
 
 noAccount:
     system("clear");

@@ -90,6 +90,8 @@ void initMenu(struct User *u)
                 exit(1);
             }
             //TODO: write new user to the file
+            (*u).id = setId();
+            saveUser(u);
             r = 1;
             break;
         case 3:
@@ -104,7 +106,7 @@ void initMenu(struct User *u)
 int main()
 {
     struct User u;
-    
+
     initMenu(&u);
     mainMenu(u);
     return 0;

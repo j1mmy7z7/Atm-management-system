@@ -98,3 +98,37 @@ const char *getPassword(struct User u)
     fclose(fp);
     return "no user found";
 }
+
+const int setId()
+{
+    FILE *fp;
+    char data[256];
+    int count = 0;
+
+    if ((fp = fopen(USERS, "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
+
+    while (fgets(data,sizeof(data), fp ) != NULL)
+    {
+        count++; 
+    }
+    fclose(fp);
+    return  count;   
+}
+
+void saveUser(struct User *u)
+{
+    FILE *fp;
+    fp = fopen(USERS, "a");
+    fprintf(fp, "%d %s %s\n", 
+    u->id,
+    u->name,
+    u->password
+    );
+
+    fclose(fp);
+}
+
