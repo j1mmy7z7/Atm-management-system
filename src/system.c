@@ -1,8 +1,16 @@
 #include "header.h"
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 const char *RECORDS = "./data/records.txt";
+
+void toLowerCase(char *str) {
+    int length = strlen(str);
+    for (int i = 0; i < length; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
 
 int getAccountFromFile(FILE *ptr, struct Record *r)
 {
@@ -144,6 +152,7 @@ noAccount:
     scanf("%s", r.accountType);
     r.userId = u.id;
     strcpy(r.name ,u.name);
+    toLowerCase(r.accountType);
 
     saveAccountToFile(pf, &r);
 
