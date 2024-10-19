@@ -1,5 +1,6 @@
 #include "header.h"
 #include <string.h>
+#include <time.h>
 
 const char *RECORDS = "./data/records.txt";
 
@@ -354,4 +355,64 @@ retry:
     printf("\tAmount deposited:%f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
     success(u);
+}
+
+void makeTransaction(struct User u)
+{
+    struct Record cr;
+    FILE *fp, *temp;
+    int option;
+    int account;
+    float amount;
+    int checker = 0;
+
+    system("clear");
+retry:
+    printf("\tEnter your account number:");
+    scanf("%d", &account);
+
+    fp = fopen(RECORDS, "r");
+    while(getAccountFromFile(fp, &cr))
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            checker = 1;
+            break;
+        } 
+    }
+    rewind(fp);
+    if (checker == 0) {
+        printf("No account with that account number\n");
+        fclose(fp);
+        goto retry;
+    }
+
+    printf("\tDo you want to\n\t\t1-> Deposit\n\t\t2-> Withdraw\n");
+    scanf("%d",&option);
+    printf("\tEnter the amount: $");
+    scanf("%f", &amount);
+    temp = fopen("./data/records.txt", "r");
+
+    printf("amount b4 %f\n", cr.amount);
+    switch (option)
+    {
+    case 1:
+        cr.amount = cr.amount + amount;
+        break;
+    case 2:
+        if (amount > cr.amount)
+        {
+            printf("Not enough money in your account to make a withdrawal\n");
+            mainMenu(u);
+        } else {
+            cr.amount = cr.amount - amount;
+        }
+        break;
+    default:
+        printf("Pick a valid option\n");
+    }
+    printf("After %f\n", cr.amount);
+
+    success(u);
+
 }
