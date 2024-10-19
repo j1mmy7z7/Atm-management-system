@@ -409,22 +409,29 @@ void makeTransaction(struct User u)
         fclose(fp);
         stayOrReturn(0,"No account with that account number", makeTransaction, u);
     }
+    
+    if (strcmp(cr.accountType, "fixed01") == 0 || strcmp(cr.accountType, "fixed02") == 0 || strcmp(cr.accountType, "fixed03") == 0)
+    {
+        fclose(fp);
+        stayOrReturn(0,"Cannot make transcations on fixed accounts", makeTransaction, u);
+    }
 
 option:
     printf("\tDo you want to\n\t\t1-> Deposit\n\t\t2-> Withdraw\n");
     scanf("%d",&option);
-    printf("\tEnter the amount: $");
-    scanf("%f", &amount);
-    
     if (option != 1 && option != 2)
     {
         printf("\tPlease pick a valid option\n");
         goto option;
         //redo the option
-    }else if (option == 2 && amount > cr.amount){
+    }
+    
+    printf("\tEnter the amount: $");
+    scanf("%f", &amount);
+    if (option == 2 && amount > cr.amount){
+        fclose(fp);
         stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
     }
-
     temp = fopen("./data/temp.txt", "w");
     while(getAccountFromFile(fp, &cr)) 
     {
