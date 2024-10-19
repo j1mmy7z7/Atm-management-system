@@ -316,3 +316,42 @@ noAccount:
     rename("./data/temp.txt", RECORDS);
     success(u);
 }
+
+void checkDetails(struct User u) 
+{
+    struct Record cr;
+    FILE *fp;
+    int account;
+    int checker = 0;
+
+    system("clear");
+retry:
+    fp = fopen(RECORDS, "r");
+    printf("\tEnter the account number: ");
+    scanf("%d", &account);
+
+    while(getAccountFromFile(fp, &cr))
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
+        {
+            checker = 1;
+            break;
+        }
+    }
+    rewind(fp);
+    if (checker == 0) 
+    {
+        printf("The record does not exits");
+        fclose(fp);
+        goto retry;
+    }
+
+    system("clear");
+    printf("\n\tAccount number:%d\n", cr.accountNbr);
+    printf("\tDeposit Date:%d/%d/%d\n", cr.deposit.day,cr.deposit.month,cr.deposit.year);
+    printf("\tCountry:%s\n", cr.country);
+    printf("\tPhone number:%d\n",cr.phone);
+    printf("\tAmount deposited:%f\n", cr.amount);
+    printf("\tType Of Account:%s\n\n", cr.accountType);
+    success(u);
+}
