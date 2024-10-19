@@ -368,18 +368,23 @@ retry:
     {
         value = (cr.amount * 0.07) / 12;
         printf("\tYou will get $%.2f as interest on day %d of every month", value, cr.deposit.day);
-    } else if (strcmp(cr.accountType, "current") == 0){
+    } else if (strcmp(cr.accountType, "current") == 0)
+    {
         printf("\tYou will not get interests because the account is of type current");
-    } else if (strcmp(cr.accountType, "fixed01") == 0){
+    } else if (strcmp(cr.accountType, "fixed01") == 0)
+    {
         value = cr.amount * 0.04;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 1);
-    } else if (strcmp(cr.accountType, "fixed02") == 0) {
+    } else if (strcmp(cr.accountType, "fixed02") == 0) 
+    {
         value = (cr.amount * 0.05) * 2;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 2);
-    } else if (strcmp(cr.accountType, "fixed03") == 0) {
+    } else if (strcmp(cr.accountType, "fixed03") == 0) 
+    {
         value = (cr.amount * 0.08) * 3;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 3);
-    } else {
+    } else 
+    {
         printf("\tYour account %s is not known and will be treated as current\n", cr.accountType);
     }
     success(u);
