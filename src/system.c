@@ -44,13 +44,13 @@ void saveAccountToFile(FILE *ptr, struct Record *r)
             r->accountType);
 }
 
-void stayOrReturn(int notGood, void f(struct User u), struct User u)
+void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u)
 {
     int option;
     if (notGood == 0)
     {
         system("clear");
-        printf("\n✖ Record not found!!\n");
+        printf("\n✖ %s!!\n", mes);
     invalid:
         printf("\nEnter 0 to try again, 1 to return to main menu and 2 to exit:");
         scanf("%d", &option);
@@ -115,7 +115,6 @@ void createNewAcc(struct User u)
     char c;
 
     system("clear");
-noAccount:
     FILE *pf = fopen(RECORDS, "a+");
     printf("\t\t\t===== New record =====\n");
 
@@ -137,9 +136,8 @@ noAccount:
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
         {
-            printf("✖ This Account already exists for this user\n\n");
             fclose(pf);
-            goto noAccount;
+            stayOrReturn(0, "This Account number is already used", createNewAcc, u);
         }
     }
     printf("\nEnter the country:");
@@ -201,7 +199,6 @@ void updateInfo(struct User u)
     
 
     system("clear");
-noAccount:
     curr = fopen(RECORDS, "r");
     printf("\t\t What is the account number you want to change ?\n");
     scanf("%d",&account);
@@ -218,9 +215,8 @@ noAccount:
     rewind(curr);
     if (checker == 0)
     {
-    printf("✖ There is no account of this record\n\n");
     fclose(curr);
-            goto noAccount;
+    stayOrReturn(0, "This account does not exist",updateInfo,u);
 
     }
 
@@ -273,7 +269,6 @@ void removeAccount(struct User u)
     int checker = 0;
     int account; 
     system("clear");
-noAccount:
     curr = fopen(RECORDS, "r");
     printf("\t Enter the account you want to delete :");
     scanf("%d", &account);
@@ -290,9 +285,8 @@ noAccount:
     rewind(curr);
     if (checker == 0)
     {
-    printf("✖ There is no account of this record\n\n");
         fclose(curr);
-        goto noAccount;
+        stayOrReturn(0, "There is no account of this record", removeAccount, u);
 
     }
     system("clear");
@@ -334,7 +328,6 @@ void checkDetails(struct User u)
     int checker = 0;
 
     system("clear");
-retry:
     fp = fopen(RECORDS, "r");
     printf("\tEnter the account number: ");
     scanf("%d", &account);
@@ -350,9 +343,8 @@ retry:
     rewind(fp);
     if (checker == 0) 
     {
-        printf("The record does not exits");
         fclose(fp);
-        goto retry;
+        stayOrReturn(0, "This account does not exist", checkDetails, u);
     }
 
     system("clear");
@@ -400,7 +392,6 @@ void makeTransaction(struct User u)
     int checker = 0;
 
     system("clear");
-retry:
     printf("\tEnter your account number:");
     scanf("%d", &account);
 
@@ -415,22 +406,23 @@ retry:
     }
     rewind(fp);
     if (checker == 0) {
-        printf("No account with that account number\n");
         fclose(fp);
-        goto retry;
+        stayOrReturn(0,"No account with that account number", makeTransaction, u);
     }
 
+option:
     printf("\tDo you want to\n\t\t1-> Deposit\n\t\t2-> Withdraw\n");
     scanf("%d",&option);
     printf("\tEnter the amount: $");
     scanf("%f", &amount);
     
-    if (option != 1 || option != 2)
+    if (option != 1 && option != 2)
     {
-        //pick a valid option
+        printf("\tPlease pick a valid option\n");
+        goto option;
         //redo the option
     }else if (option == 2 && amount > cr.amount){
-        //retrun to menu with a message
+        stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
     }
 
     temp = fopen("./data/temp.txt", "w");
