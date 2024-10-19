@@ -25,8 +25,7 @@ void mainMenu(struct User u)
         updateInfo(u);
         break;
     case 3:
-        // student TODO : add your **Check the details of existing accounts** function
-        // here
+        checkDetails(u);
         break;
     case 4:
         checkAllAccounts(u);
