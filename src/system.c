@@ -119,7 +119,6 @@ noAccount:
         }
     }
     rewind(pf);
-    printf("%d", count);
     r.id = count + 1;
     printf("\nEnter today's date(mm/dd/yyyy):");
     scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
@@ -352,8 +351,28 @@ retry:
     printf("\tDeposit Date:%d/%d/%d\n", cr.deposit.day,cr.deposit.month,cr.deposit.year);
     printf("\tCountry:%s\n", cr.country);
     printf("\tPhone number:%d\n",cr.phone);
-    printf("\tAmount deposited:%f\n", cr.amount);
+    printf("\tAmount deposited:%.2f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
+
+    float value;
+    if (strcmp(cr.accountType, "saving") == 0)
+    {
+        value = (cr.amount * 0.07) / 12;
+        printf("\tYou will get $%.2f as interest on day %d of every month", value, cr.deposit.day);
+    } else if (strcmp(cr.accountType, "current") == 0){
+        printf("\tYou will not get interests because the account is of type current");
+    } else if (strcmp(cr.accountType, "fixed01") == 0){
+        value = cr.amount * 0.04;
+        printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 1);
+    } else if (strcmp(cr.accountType, "fixed02") == 0) {
+        value = (cr.amount * 0.05) * 2;
+        printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 2);
+    } else if (strcmp(cr.accountType, "fixed03") == 0) {
+        value = (cr.amount * 0.08) * 3;
+        printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 3);
+    } else {
+        printf("\tYour account %s is not known and will be treated as current\n", cr.accountType);
+    }
     success(u);
 }
 
@@ -403,7 +422,7 @@ retry:
         if (amount > cr.amount)
         {
             printf("Not enough money in your account to make a withdrawal\n");
-            mainMenu(u);
+            //stay or leave
         } else {
             cr.amount = cr.amount - amount;
         }
