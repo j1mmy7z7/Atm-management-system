@@ -116,7 +116,7 @@ void createNewAcc(struct User u)
     FILE *pf;
 
     system("clear");
-    if (pf = fopen(RECORDS, "a+") == NULL)
+    if ((pf = fopen(RECORDS, "a+")) == NULL)
     {
         printf("Error! openign file");
         exit(1);
@@ -170,7 +170,7 @@ void checkAllAccounts(struct User u)
     struct Record r;
     FILE *pf;
 
-    if (pf = fopen(RECORDS, "r") == NULL)
+    if ((pf = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -210,7 +210,7 @@ void updateInfo(struct User u)
     
 
     system("clear");
-    if (curr = fopen(RECORDS, "r") == NULL)
+    if ((curr = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -235,7 +235,7 @@ void updateInfo(struct User u)
 
     }
 
-    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    if ((temp = fopen("./data/temp.txt", "w")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -289,7 +289,7 @@ void removeAccount(struct User u)
     int account;
 
     system("clear");
-    if (curr = fopen(RECORDS, "r") == NULL)
+    if ((curr = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -321,7 +321,7 @@ void removeAccount(struct User u)
     printf("\tAmount deposited:%f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
     
-    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    if ((temp = fopen("./data/temp.txt", "w")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -356,7 +356,7 @@ void checkDetails(struct User u)
     int checker = 0;
 
     system("clear");
-    if (fp = fopen(RECORDS, "r") == NULL)
+    if ((fp = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -427,7 +427,7 @@ void makeTransaction(struct User u)
     printf("\tEnter your account number:");
     scanf("%d", &account);
 
-    if (fp = fopen(RECORDS, "r") == NULL)
+    if ((fp = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -468,7 +468,7 @@ option:
         fclose(fp);
         stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
     }
-    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    if ((temp = fopen("./data/temp.txt", "w")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
