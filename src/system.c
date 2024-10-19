@@ -113,9 +113,15 @@ void createNewAcc(struct User u)
     char userName[50];
     int count = 0;
     char c;
+    FILE *pf;
 
     system("clear");
-    FILE *pf = fopen(RECORDS, "a+");
+    if (pf = fopen(RECORDS, "a+") == NULL)
+    {
+        printf("Error! openign file");
+        exit(1);
+    }
+
     printf("\t\t\t===== New record =====\n");
 
     while (getAccountFromFile(pf, &cr))
@@ -162,8 +168,13 @@ void checkAllAccounts(struct User u)
 {
     char userName[100];
     struct Record r;
+    FILE *pf;
 
-    FILE *pf = fopen(RECORDS, "r");
+    if (pf = fopen(RECORDS, "r") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
 
     system("clear");
     printf("\t\t====== All accounts from user, %s =====\n\n", u.name);
@@ -199,7 +210,11 @@ void updateInfo(struct User u)
     
 
     system("clear");
-    curr = fopen(RECORDS, "r");
+    if (curr = fopen(RECORDS, "r") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     printf("\t\t What is the account number you want to change ?\n");
     scanf("%d",&account);
     
@@ -220,7 +235,11 @@ void updateInfo(struct User u)
 
     }
 
-    temp = fopen("./data/temp.txt", "w");
+    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     printf("\tWhich information do you want?\n ");
     printf("\t 1-> phone number\n");
     printf("\t 2-> country\n");
@@ -267,9 +286,14 @@ void removeAccount(struct User u)
     struct Record cr;
     FILE *curr, *temp;
     int checker = 0;
-    int account; 
+    int account;
+
     system("clear");
-    curr = fopen(RECORDS, "r");
+    if (curr = fopen(RECORDS, "r") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     printf("\t Enter the account you want to delete :");
     scanf("%d", &account);
 
@@ -297,7 +321,11 @@ void removeAccount(struct User u)
     printf("\tAmount deposited:%f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
     
-    temp = fopen("./data/temp.txt", "w");
+    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     checker = 0;
     while (getAccountFromFile(curr, &cr))
     {
@@ -328,7 +356,11 @@ void checkDetails(struct User u)
     int checker = 0;
 
     system("clear");
-    fp = fopen(RECORDS, "r");
+    if (fp = fopen(RECORDS, "r") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     printf("\tEnter the account number: ");
     scanf("%d", &account);
 
@@ -395,7 +427,11 @@ void makeTransaction(struct User u)
     printf("\tEnter your account number:");
     scanf("%d", &account);
 
-    fp = fopen(RECORDS, "r");
+    if (fp = fopen(RECORDS, "r") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     while(getAccountFromFile(fp, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
@@ -432,7 +468,11 @@ option:
         fclose(fp);
         stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
     }
-    temp = fopen("./data/temp.txt", "w");
+    if (temp = fopen("./data/temp.txt", "w") == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
     while(getAccountFromFile(fp, &cr)) 
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account) {

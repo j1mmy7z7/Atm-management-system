@@ -151,7 +151,10 @@ const int getId(struct User u)
 void saveUser(struct User *u)
 {
     FILE *fp;
-    fp = fopen(USERS, "a");
+    if (fp = fopen(USERS, "a") == NULL) {
+        printf("Error! opening file");
+        exit(1);
+    }
     fprintf(fp, "%d %s %s\n", 
     u->id,
     u->name,
