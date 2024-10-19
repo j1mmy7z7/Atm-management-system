@@ -134,7 +134,6 @@ noAccount:
             goto noAccount;
         }
     }
-    rewind(pf);
     printf("\nEnter the country:");
     scanf("%s", r.country);
     printf("\nEnter the phone number:");
@@ -287,6 +286,13 @@ noAccount:
         goto noAccount;
 
     }
+    system("clear");
+    printf("\t\t====== Deleted account ======\n\n");
+    printf("\tAccount number:%d\n", cr.accountNbr);
+    printf("\tCountry:%s\n", cr.country);
+    printf("\tPhone number:%d\n", cr.phone);
+    printf("\tAmount deposited:%f\n", cr.amount);
+    printf("\tType Of Account:%s\n\n", cr.accountType);
     
     temp = fopen("./data/temp.txt", "w");
     checker = 0;
