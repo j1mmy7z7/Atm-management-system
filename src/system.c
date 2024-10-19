@@ -424,27 +424,31 @@ retry:
     scanf("%d",&option);
     printf("\tEnter the amount: $");
     scanf("%f", &amount);
-    temp = fopen("./data/records.txt", "r");
-
-    printf("amount b4 %f\n", cr.amount);
-    switch (option)
+    
+    if (option != 1 || option != 2)
     {
-    case 1:
-        cr.amount = cr.amount + amount;
-        break;
-    case 2:
-        if (amount > cr.amount)
-        {
-            printf("Not enough money in your account to make a withdrawal\n");
-            //stay or leave
-        } else {
-            cr.amount = cr.amount - amount;
-        }
-        break;
-    default:
-        printf("Pick a valid option\n");
+        //pick a valid option
+        //redo the option
+    }else if (option == 2 && amount > cr.amount){
+        //retrun to menu with a message
     }
-    printf("After %f\n", cr.amount);
+
+    temp = fopen("./data/temp.txt", "w");
+    while(getAccountFromFile(fp, &cr)) 
+    {
+        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account) {
+            if (option == 1) {
+                cr.amount = cr.amount + amount;
+            } else if (option == 2) {
+                cr.amount = cr.amount - amount;
+            }
+        }
+        saveAccountToFile(temp, &cr);
+    }
+    fclose(fp);
+    fclose(temp);
+    remove(RECORDS);
+    rename("./data/temp.txt", RECORDS);   
 
     success(u);
 
