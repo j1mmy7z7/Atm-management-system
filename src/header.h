@@ -45,3 +45,4 @@ void checkAllAccounts(struct User u);
 void updateInfo(struct User u);
 void removeAccount(struct User u);
 void checkDetails(struct User u);
+void makeTransaction(struct User u);
