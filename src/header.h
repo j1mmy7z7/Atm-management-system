@@ -46,5 +46,13 @@ void updateInfo(struct User u);
 void removeAccount(struct User u);
 void checkDetails(struct User u);
 void makeTransaction(struct User u);
-void toLowerCase(char *str);
 void transferOwner(struct User u);
+
+//utility
+void toLowerCase(char *str);
+void clearStdin();
+int getAccountFromFile(FILE *ptr, struct Record *r);
+void saveAccountToFile(FILE *ptr, struct Record *r);
+void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u);
+void success(struct User u);
+
