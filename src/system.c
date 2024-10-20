@@ -492,3 +492,86 @@ option:
     success(u);
 
 }
+
+void transferOwner(struct User u) 
+{
+    struct Record r;
+    FILE *curr, *temp;
+    int checker = 0;
+    int account;
+    char username[50];
+
+    system("clear");
+    printf("\tEnter the account number you want to transfer ownership: ");
+    scanf("%d", &account);
+    
+    if ((curr = fopen(RECORDS, "r")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
+    while (getAccountFromFile(curr, &r))
+    {
+        if (strcmp(u.name, r.name) == 0 && account == r.accountNbr) {
+            checker = 1;
+            break;
+        }
+    }
+    rewind(curr);
+    if (checker == 0)
+    {
+        fclose(curr);
+        stayOrReturn(0, "This account does not exist", transferOwner, u);
+    }
+
+    printf("\n\t\t ==== Transfering account:\n\n");
+    printf("\tAccount number: %d\n", r.accountNbr);
+    printf("\tDeposit Date: %d/%d/%d \n", r.deposit.day, r.deposit.month, r.deposit.year);
+    printf("\tCountry: %s\n", r.country);
+    printf("\tPhone number: %d\n", r.phone);
+    printf("\tAmount deposited: $%f\n", r.amount);
+    printf("\tType Of Account: %s\n\n", r.accountType);
+
+    printf("\tWhich user you want to transfer ownership to (user name): ");
+    scanf("%s", username);
+
+    checker = 0;
+    while (getAccountFromFile(curr, &r))
+    {
+        if (strcmp(r.name, username) == 0)
+        {
+            checker = 1;
+            break;
+        }
+    }
+    rewind(curr);
+
+    if (checker == 0) 
+    {
+        fclose(curr);
+        stayOrReturn(0, "The user provided does not exist", transferOwner, u);
+    }
+
+    if((temp = fopen("./data/temp.txt", "w")) == NULL)
+    {
+        printf("Error! opening file");
+        exit(1);
+    }
+
+    while (getAccountFromFile(curr, &r)) 
+    {
+        if (strcmp(u.name, r.name) == 0 && r.accountNbr == account) 
+        {
+            strcpy(r.name, username);
+        }
+        saveAccountToFile(temp, &r);
+    }
+
+    fclose(curr);
+    fclose(temp);
+    remove(RECORDS);
+    rename("./data/temp.txt", RECORDS);
+
+    success(u);
+
+}
