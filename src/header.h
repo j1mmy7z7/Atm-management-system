@@ -47,3 +47,4 @@ void removeAccount(struct User u);
 void checkDetails(struct User u);
 void makeTransaction(struct User u);
 void toLowerCase(char *str);
+void transferOwner(struct User u);
