@@ -46,15 +46,18 @@ void createNewAcc(struct User u)
         }
     }
     printf("\nEnter the country:");
-    scanf("%s", r.country);
+    scanf("%99s", r.country);
+    clearStdin();
     printf("\nEnter the phone number:");
     scanf("%d", &r.phone);
     printf("\nEnter amount to deposit: $");
     scanf("%lf", &r.amount);
     printf("\nChoose the type of account:\n\t-> saving\n\t-> current\n\t-> fixed01(for 1 year)\n\t-> fixed02(for 2 years)\n\t-> fixed03(for 3 years)\n\n\tEnter your choice:");
-    scanf("%s", r.accountType);
+    scanf("%9s", r.accountType);
+    clearStdin();
     r.userId = u.id;
-    strcpy(r.name ,u.name);
+    strncpy(r.name, u.name, sizeof(r.name) - 1);
+    r.name[sizeof(r.name) - 1] = '\0'; 
     toLowerCase(r.accountType);
 
     saveAccountToFile(pf, &r);
@@ -152,7 +155,8 @@ void updateInfo(struct User u)
         break;
     case 2:
         printf("Enter your new country: ");
-        scanf("%s", country);
+        scanf("%99s", country);
+        clearStdin();
         break;
     default:
         printf("choose either 1 or 2");
@@ -165,6 +169,8 @@ void updateInfo(struct User u)
         {
             if(phone == 0) {
                 strcpy(cr.country, country);
+                strncpy(cr.country, country, sizeof(cr.country) - 1);
+                cr.country[sizeof(cr.country) - 1] = '\0'; 
             } else {
                 cr.phone = phone;
             }
@@ -428,11 +434,12 @@ void transferOwner(struct User u)
     printf("\tDeposit Date: %d/%d/%d \n", r.deposit.day, r.deposit.month, r.deposit.year);
     printf("\tCountry: %s\n", r.country);
     printf("\tPhone number: %d\n", r.phone);
-    printf("\tAmount deposited: $%f\n", r.amount);
+    printf("\tAmount deposited: $%.2f\n", r.amount);
     printf("\tType Of Account: %s\n\n", r.accountType);
 
     printf("\tWhich user you want to transfer ownership to (user name): ");
-    scanf("%s", username);
+    scanf("%99s", username);
+    clearStdin();
 
     checker = 0;
     while (getAccountFromFile(curr, &r))
@@ -461,7 +468,8 @@ void transferOwner(struct User u)
     {
         if (strcmp(u.name, r.name) == 0 && r.accountNbr == account) 
         {
-            strcpy(r.name, username);
+            strncpy(r.name, username, sizeof(r.name) - 1);
+            r.name[sizeof(r.name) - 1] = '\0'; 
         }
         saveAccountToFile(temp, &r);
     }
