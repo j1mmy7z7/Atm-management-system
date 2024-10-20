@@ -405,6 +405,7 @@ void transferOwner(struct User u)
     int checker = 0;
     int account;
     char username[50];
+    int userId = 0;
 
     system("clear");
     printf("\tEnter the account number you want to transfer ownership: ");
@@ -447,6 +448,7 @@ void transferOwner(struct User u)
         if (strcmp(r.name, username) == 0)
         {
             checker = 1;
+            userId = r.userId;
             break;
         }
     }
@@ -469,7 +471,8 @@ void transferOwner(struct User u)
         if (strcmp(u.name, r.name) == 0 && r.accountNbr == account) 
         {
             strncpy(r.name, username, sizeof(r.name) - 1);
-            r.name[sizeof(r.name) - 1] = '\0'; 
+            r.name[sizeof(r.name) - 1] = '\0';
+            r.userId = userId; 
         }
         saveAccountToFile(temp, &r);
     }
