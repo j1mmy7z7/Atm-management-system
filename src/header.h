@@ -25,16 +25,16 @@ struct Record
 struct User
 {
     int id;
-    char name[50];
-    char password[50];
+    char name[100];
+    char password[100];
 };
 
 // authentication functions
-void loginMenu(char a[50], char pass[50]);
+void loginMenu(char a[100], char pass[100]);
 const int setId();
 const int getId(struct User u);
 const char *getPassword(struct User u);
-void registerUser(char a[50],  char pass[50]);
+void registerUser(char a[100],  char pass[100]);
 const char *getUserName(struct User u);
 void saveUser(struct User *u);
 

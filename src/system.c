@@ -171,11 +171,10 @@ void checkAllAccounts(struct User u)
 void updateInfo(struct User u)
 {
     struct Record cr;
+    int phone = 0;
     int account;
     int checker = 0;
-    int phone = 0;
-    char country[100];
-    int number;
+    char buffer[100];
     FILE *curr, *temp;
     
 
@@ -185,9 +184,17 @@ void updateInfo(struct User u)
         printf("Error! opening file");
         exit(1);
     }
+invalid:
     printf("\t\t What is the account number you want to change ?\n");
-    scanf("%d",&account);
-    clearStdin();
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0) 
+    {
+        printf("\t\nPlease enter a valid option\n\n");
+        goto invalid;    
+    }
+        sscanf(buffer,"%d", &account);
     
     while (getAccountFromFile(curr, &cr))
     {
@@ -206,40 +213,74 @@ void updateInfo(struct User u)
 
     }
 
+    checker = 0;
+validOption:
+    printf("\tWhich information do you want?\n ");
+    printf("\t 1-> phone number\n");
+    printf("\t 2-> country\n");
+    fgets(buffer,50,stdin);
+    checkBuffer(buffer);
+
+    if (checkValidType(buffer,"int") != 0) 
+    {
+        printf("\n\tplease choose either 1 or 2 \n\n");
+        goto validOption;
+    }
+    int number = 0;
+    sscanf(buffer,"%d", &number);
+    if (number < 0 || number > 2 )
+    {
+        printf("\t\nEnter between one and two\n\n");
+        goto validOption;
+    }
+    switch (number)
+    {
+    case 1:
+enterPhone:
+        checker = 1;
+        printf("Enter your new phone number: ");
+        fgets(buffer,100,stdin);
+        checkBuffer(buffer);
+
+        if (checkValidType(buffer, "int") != 0)
+        {
+            printf("\n\tPlease enter a valide phone number\n\n");
+            goto enterPhone;
+        }
+        sscanf(buffer,"%d", &phone);
+        if (phone < 0) {
+            printf("\t\nPlease enter a valid phone number\n\n");
+            goto enterPhone;
+        }
+        break;
+    case 2:
+enterCountry:
+        printf("Enter your new country: ");     
+        fgets(buffer,100,stdin);
+        checkBuffer(buffer);
+
+        if (checkValidType(buffer, "str") != 0)
+        {
+            printf("\n\tPlease enter a valid letters only\n\n");
+            goto enterCountry;
+        }
+        break;
+    default:
+        break;
+    }
+
     if ((temp = fopen("./data/temp.txt", "w")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
-    }
-    printf("\tWhich information do you want?\n ");
-    printf("\t 1-> phone number\n");
-    printf("\t 2-> country\n");
-    scanf("%d", &number);
-
-    switch (number)
-    {
-    case 1:
-        printf("Enter your new phone number: ");
-        scanf("%d", &phone);
-        clearStdin();
-        break;
-    case 2:
-        printf("Enter your new country: ");
-        scanf("%99s", country);
-        clearStdin();
-        break;
-    default:
-        printf("choose either 1 or 2");
-        break;
     }
 
     while (getAccountFromFile(curr, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
         {
-            if(phone == 0) {
-                strcpy(cr.country, country);
-                strncpy(cr.country, country, sizeof(cr.country) - 1);
+            if(checker == 0) {
+                strncpy(cr.country, buffer, sizeof(cr.country) - 1);
                 cr.country[sizeof(cr.country) - 1] = '\0'; 
             } else {
                 cr.phone = phone;
@@ -261,6 +302,7 @@ void removeAccount(struct User u)
     struct Record cr;
     FILE *curr, *temp;
     int checker = 0;
+    char buffer[100];
     int account;
 
     system("clear");
@@ -269,8 +311,18 @@ void removeAccount(struct User u)
         printf("Error! opening file");
         exit(1);
     }
+enterAccount:
     printf("\t Enter the account you want to delete :");
-    scanf("%d", &account);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if (checkValidType(buffer, "int") != 0)
+    {
+        printf("\t\nPlease input numericals only\n\n");
+        goto enterAccount;
+    }
+
+    sscanf(buffer,"%d",&account);
 
     while (getAccountFromFile(curr, &cr))
     {
@@ -293,7 +345,7 @@ void removeAccount(struct User u)
     printf("\tAccount number:%d\n", cr.accountNbr);
     printf("\tCountry:%s\n", cr.country);
     printf("\tPhone number:%d\n", cr.phone);
-    printf("\tAmount deposited:%f\n", cr.amount);
+    printf("\tAmount deposited:%.2f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
     
     if ((temp = fopen("./data/temp.txt", "w")) == NULL)
@@ -327,6 +379,7 @@ void checkDetails(struct User u)
 {
     struct Record cr;
     FILE *fp;
+    char buffer[100];
     int account;
     int checker = 0;
 
@@ -336,8 +389,18 @@ void checkDetails(struct User u)
         printf("Error! opening file");
         exit(1);
     }
+validAccount:
     printf("\tEnter the account number: ");
-    scanf("%d", &account);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if (checkValidType(buffer, "int") != 0)
+    {
+        printf("\t\n Please enter a valid account number\n\n");
+        goto validAccount;
+    }
+
+    sscanf(buffer,"%d", &account);
 
     while(getAccountFromFile(fp, &cr))
     {
@@ -391,6 +454,7 @@ void checkDetails(struct User u)
 
 void makeTransaction(struct User u)
 {
+    char buffer[100];
     struct Record cr;
     FILE *fp, *temp;
     int option;
@@ -399,8 +463,18 @@ void makeTransaction(struct User u)
     int checker = 0;
 
     system("clear");
+validac:
     printf("\tEnter your account number:");
-    scanf("%d", &account);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0) 
+    {
+        printf("\t\nPlease enter a valid option\n\n");
+        goto validac;
+    }
+    sscanf(buffer,"%d", &account);
+    
 
     if ((fp = fopen(RECORDS, "r")) == NULL)
     {
@@ -429,16 +503,34 @@ void makeTransaction(struct User u)
 
 option:
     printf("\tDo you want to\n\t\t1-> Deposit\n\t\t2-> Withdraw\n");
-    scanf("%d",&option);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0) 
+    {
+        printf("\t\nPlease enter a valid option\n\n");
+        goto option;
+    }
+    sscanf(buffer,"%d", &option);
+    
     if (option != 1 && option != 2)
     {
         printf("\tPlease pick a valid option\n");
         goto option;
         //redo the option
     }
-    
+Amount:
     printf("\tEnter the amount: $");
-    scanf("%f", &amount);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0) 
+    {
+        printf("\t\nPlease enter a valid option\n\n");
+        goto Amount;
+    }
+    sscanf(buffer,"%f", &amount);
+    
     if (option == 2 && amount > cr.amount){
         fclose(fp);
         stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
@@ -474,12 +566,22 @@ void transferOwner(struct User u)
     FILE *curr, *temp;
     int checker = 0;
     int account;
+    char buffer[100];
     char username[50];
     int userId = 0;
 
     system("clear");
+validAcc:
     printf("\tEnter the account number you want to transfer ownership: ");
-    scanf("%d", &account);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0) 
+    {
+        printf("\t\nPlease enter a valid account number\n\n");
+        goto validAcc;
+    }
+    sscanf(buffer,"%d", &account);
     
     if ((curr = fopen(RECORDS, "r")) == NULL)
     {

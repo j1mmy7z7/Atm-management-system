@@ -4,14 +4,16 @@
 
 char *USERS = "./data/users.txt";
 
-void loginMenu(char a[50], char pass[50])
+void loginMenu(char a[100], char pass[100])
 {
     struct termios oflags, nflags;
+    char buffer[100];
 
     system("clear");
     printf("\n\n\n\t\t\t\t   Bank Management System\n\t\t\t\t\t User Login:");
-    fgets(a,50,stdin);
-    a[strcspn(a, "\n")] = 0;
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+    sscanf(buffer,"%s",a);
 
     // disabling echo
     tcgetattr(fileno(stdin), &oflags);
@@ -25,8 +27,9 @@ void loginMenu(char a[50], char pass[50])
         return exit(1);
     }
     printf("\n\n\n\n\n\t\t\t\tEnter the password to login:");
-    fgets(pass,50,stdin);
-    pass[strcspn(pass, "\n")] = 0;
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+    sscanf(buffer,"%s",pass);
 
     // restore terminal
     if (tcsetattr(fileno(stdin), TCSANOW, &oflags) != 0)
@@ -36,15 +39,22 @@ void loginMenu(char a[50], char pass[50])
     }
 };
 
-void registerUser(char a[50], char pass[50]) 
+void registerUser(char a[100], char pass[100]) 
 {
+    char buffer[100];
     system("clear");
     printf("\n\n\n\t\t\t\t   Bank Management System\n\t\t\t\t\t UserName:");
-    fgets(a,50,stdin);
-    a[strcspn(a, "\n")] = 0;
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+    sscanf(buffer,"%s",a);
+
+
     printf("\n\n\n\n\n\t\t\t\tEnter your password:");
-    fgets(pass, 50,stdin);
-    pass[strcspn(pass, "\n")] = 0;
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+    sscanf(buffer,"%s",pass);
+
+
 }
 
 const char *getUserName(struct User u)

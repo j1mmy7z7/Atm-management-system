@@ -15,6 +15,7 @@ void mainMenu(struct User u)
     printf("\n\t\t[7]- Transfer ownership\n");
     printf("\n\t\t[8]- Exit\n");
     scanf("%d", &option);
+    getchar();
 
     switch (option)
     {

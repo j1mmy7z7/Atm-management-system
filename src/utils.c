@@ -149,6 +149,7 @@ void saveAccountToFile(FILE *ptr, struct Record *r)
 
 void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u)
 {
+    char buffer[100];
     int option;
     if (notGood == 0)
     {
@@ -156,7 +157,16 @@ void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u)
         printf("\n✖ %s!!\n", mes);
     invalid:
         printf("\nEnter 0 to try again, 1 to return to main menu and 2 to exit:");
-        scanf("%d", &option);
+        fgets(buffer,100,stdin);
+        checkBuffer(buffer);
+
+        if(checkValidType(buffer, "int")!= 0) 
+        {
+            printf("\t\nPlease enter a valid option\n\n");
+            goto invalid;
+        }
+        sscanf(buffer,"%d", &option);
+    
         if (option == 0)
             f(u);
         else if (option == 1)
@@ -172,7 +182,16 @@ void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u)
     else
     {
         printf("\nEnter 1 to go to the main menu and 0 to exit:");
-        scanf("%d", &option);
+        fgets(buffer,100,stdin);
+        checkBuffer(buffer);
+
+        if(checkValidType(buffer, "int")!= 0) 
+        {
+            printf("\t\nPlease enter a valid option\n\n");
+            goto invalid;
+        }
+        sscanf(buffer,"%d", &option);
+    
     }
     if (option == 1)
     {
@@ -188,11 +207,21 @@ void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u)
 
 void success(struct User u)
 {
+    char buffer[100];
     int option;
     printf("\n✔ Success!\n\n");
 invalid:
     printf("Enter 1 to go to the main menu and 0 to exit!\n");
-    scanf("%d", &option);
+    fgets(buffer,100,stdin);
+    checkBuffer(buffer);
+
+    if(checkValidType(buffer, "int")!= 0)     
+    {
+        printf("\t\nPlease enter a valid option\n\n");
+        goto invalid;
+    }
+    sscanf(buffer,"%d", &option);
+    
     system("clear");
     if (option == 1)
     {
