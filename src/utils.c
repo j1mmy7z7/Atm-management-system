@@ -25,6 +25,74 @@ int leapyear(int year)
     }
 }
 
+void checkBuffer(char initial[100]) 
+{
+    int len = strlen(initial);
+    if (initial[len - 1] != '\n')
+    {
+        clearStdin();
+    }else {
+        initial[strcspn(initial, "\n")] = 0;
+    }
+}
+
+int checkValidType(char a[100], char type[4])
+{
+    if (strlen(a) == 0) 
+    {
+        return 1;
+    }
+    if (strcmp(type, "str") == 0) 
+    {
+        int len = strlen(a);
+        for (int i = 0; i < len; i++) 
+        {
+            if (!isalpha(a[i])) {
+                return 1;
+            }
+        }
+        return 0;
+    } else if (strcmp(type, "flt") == 0) {
+        int len = strlen(a);
+        int dotCount = 0;
+        for (int i = 0; i < len; i++) {
+            if (!isdigit(a[i])) {
+                if (a[i] == '.') {
+                    dotCount++;
+                } else {
+                    return 1; // Found an invalid character
+                }
+            }
+        }
+        // Valid float should have at most one dot
+        if (dotCount > 1) {
+            return 1;
+        }
+        return 0; 
+    } else if (strcmp(type, "int") == 0) {
+        int len  = strlen(a);
+        for (int i = 0; i < len; i++)
+        {
+            if (!isdigit(a[i]))
+            {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    return 1;
+}
+
+int checkValidAccount(char a[100])
+{
+    char *accounts[5] = {"saving", "current", "fixed01","fixed02","fixed03"};
+    for (int i = 0; i < 5; i++){
+        if (strcmp(a, accounts[i]) == 0) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 int checkValidDate(struct Date *deposit)
 {
