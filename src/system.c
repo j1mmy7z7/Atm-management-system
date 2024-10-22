@@ -31,6 +31,7 @@ void createNewAcc(struct User u)
     count = cr.id;
     rewind(pf);
     r.id = count + 1;
+
 validDate:
     printf("\nEnter today's date(mm/dd/yyyy):");
     scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
@@ -40,9 +41,23 @@ validDate:
         printf("\n\n Please!! Enter a valid date\n\n");
         goto validDate;
     }
+
+
+validAccount:
     printf("\nEnter the account number:");
-    scanf("%d", &r.accountNbr);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    if (checkValidType(initial, "int") != 0) 
+    {
+        printf("\n\t\t✖ Please!! Enter a valid account number, numbers only or positive numbers \n\n");
+        goto validAccount;
+    }
+    sscanf(initial,"%d", &r.accountNbr);
+    if (r.accountNbr < 0) {
+        printf("\n\t\tPlease enter a useable account number\n\n");
+        goto validAccount;
+    }
+
     while (getAccountFromFile(pf, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
@@ -51,18 +66,63 @@ validDate:
             stayOrReturn(0, "This Account number is already used", createNewAcc, u);
         }
     }
+
+validCountry:
     printf("\nEnter the country:");
-    scanf("%99s", r.country);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    if (checkValidType(initial, "str") != 0) 
+    {
+        printf("\n\t\t✖ Please!! Enter a valid country, don't include numbers or punctuation\n\n");
+        goto validCountry;
+    }
+    strncpy(r.country, initial, sizeof(r.country) - 1);
+    r.country[sizeof(r.country) - 1] = '\0';
+
+validPhone:
     printf("\nEnter the phone number:");
-    scanf("%d", &r.phone);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    if (checkValidType(initial, "int") != 0) 
+    {
+        printf("\n\t\t✖ Please!! Enter a valid phone-number, don't include letters or punctuation\n\n");
+        goto validPhone;
+    }
+    sscanf(initial,"%d", &r.phone);
+    if (r.phone < 0) {
+        printf("\n\t\tEnter a valid phone number\n\n");
+        goto validPhone;
+    }
+
+
+validAmount:
     printf("\nEnter amount to deposit: $");
-    scanf("%lf", &r.amount);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    if (checkValidType(initial, "flt") != 0) 
+    {
+        printf("\n\t\t✖ Please!! Enter a valid amount, don't use commas\n\n");
+        goto validAmount;
+    }
+    sscanf(initial,"%lf", &r.amount);
+    if (&r.amount < 0) {
+        printf("\n\t\tEnter a valid amout\n\n");
+        goto validAmount;
+    }
+
+validAccountType:
     printf("\nChoose the type of account:\n\t-> saving\n\t-> current\n\t-> fixed01(for 1 year)\n\t-> fixed02(for 2 years)\n\t-> fixed03(for 3 years)\n\n\tEnter your choice:");
-    scanf("%9s", r.accountType);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    if (checkValidAccount(initial) != 0) 
+    {
+        printf("\n\t\t✖ Please!! Enter a valid option avaliable on the list\n\n");
+        goto validAccountType;
+    }
+    strncpy(r.accountType, initial, sizeof(r.accountType) - 1);
+    r.accountType[sizeof(r.accountType) - 1] = '\0';
+
+
     r.userId = u.id;
     strncpy(r.name, u.name, sizeof(r.name) - 1);
     r.name[sizeof(r.name) - 1] = '\0'; 
