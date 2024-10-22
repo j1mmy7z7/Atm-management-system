@@ -17,7 +17,7 @@ void createNewAcc(struct User u)
     system("clear");
     if ((pf = fopen(RECORDS, "a+")) == NULL)
     {
-        printf("Error! openign file");
+        printf("Error! opening file");
         exit(1);
     }
 
@@ -25,18 +25,23 @@ void createNewAcc(struct User u)
 
     while (getAccountFromFile(pf, &cr))
     {
-        if (cr.id > count)
-        {
-            count = cr.id;
-        }
+        //loop till we reach the last value
     }
+    count = cr.id;
     rewind(pf);
     r.id = count + 1;
+validDate:
     printf("\nEnter today's date(mm/dd/yyyy):");
     scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
+    clearStdin();
+    if (checkValidDate(&r.deposit) == 1) 
+    {
+        printf("\n\n Please!! Enter a valid date\n\n");
+        goto validDate;
+    }
     printf("\nEnter the account number:");
     scanf("%d", &r.accountNbr);
-
+    clearStdin();
     while (getAccountFromFile(pf, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
@@ -50,8 +55,10 @@ void createNewAcc(struct User u)
     clearStdin();
     printf("\nEnter the phone number:");
     scanf("%d", &r.phone);
+    clearStdin();
     printf("\nEnter amount to deposit: $");
     scanf("%lf", &r.amount);
+    clearStdin();
     printf("\nChoose the type of account:\n\t-> saving\n\t-> current\n\t-> fixed01(for 1 year)\n\t-> fixed02(for 2 years)\n\t-> fixed03(for 3 years)\n\n\tEnter your choice:");
     scanf("%9s", r.accountType);
     clearStdin();
@@ -119,6 +126,7 @@ void updateInfo(struct User u)
     }
     printf("\t\t What is the account number you want to change ?\n");
     scanf("%d",&account);
+    clearStdin();
     
     while (getAccountFromFile(curr, &cr))
     {
@@ -152,6 +160,7 @@ void updateInfo(struct User u)
     case 1:
         printf("Enter your new phone number: ");
         scanf("%d", &phone);
+        clearStdin();
         break;
     case 2:
         printf("Enter your new country: ");
