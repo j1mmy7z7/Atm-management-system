@@ -16,6 +16,37 @@ void clearStdin()
     while ((c = getchar()) != '\n' && c != EOF);
 } 
 
+int leapyear(int year)
+{
+    if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+
+int checkValidDate(struct Date *deposit)
+{
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (deposit->month > 12 || deposit->month < 0) {
+        return 1;
+    } else if (deposit ->day > 31) {
+        return 1;
+    } else if (leapyear(deposit ->year) == 0 && deposit->month == 2) {
+        if (deposit ->day > 29) {
+            return 1;
+        }
+    } else if (leapyear(deposit ->year) == 1 && deposit ->month == 2) {
+        if (deposit -> day > 28) {
+            return 1;
+        }
+    } else {
+        if (deposit -> day < 1 || deposit->day > daysInMonth[deposit->month - 1])
+            return 1;
+    }
+}
+
 int getAccountFromFile(FILE *ptr, struct Record *r)
 {
     return fscanf(ptr, "%d %d %s %d %d/%d/%d %s %d %lf %s",
