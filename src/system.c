@@ -9,6 +9,7 @@ void createNewAcc(struct User u)
 {
     struct Record r;
     struct Record cr;
+    char initial[100];
     char userName[50];
     int count = 0;
     char c;
