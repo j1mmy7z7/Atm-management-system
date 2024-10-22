@@ -51,6 +51,8 @@ void transferOwner(struct User u);
 //utility
 void toLowerCase(char *str);
 void clearStdin();
+int checkValidDate(struct Date *deposit);
+int leapyear(int year);
 int getAccountFromFile(FILE *ptr, struct Record *r);
 void saveAccountToFile(FILE *ptr, struct Record *r);
 void stayOrReturn(int notGood, char *mes, void f(struct User u), struct User u);
