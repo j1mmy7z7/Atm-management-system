@@ -562,8 +562,10 @@ Amount:
 
 void transferOwner(struct User u) 
 {
+    const char *USERS = "./data/users.txt";
     struct Record r;
-    FILE *curr, *temp;
+    struct User p;
+    FILE *curr, *temp, *user;
     int checker = 0;
     int account;
     char buffer[100];
@@ -615,17 +617,23 @@ validAcc:
     clearStdin();
 
     checker = 0;
-    while (getAccountFromFile(curr, &r))
+    if ((user = fopen(USERS,"r")) == NULL) 
     {
-        if (strcmp(r.name, username) == 0)
+        printf("Error! opening file");
+        exit(1);
+    }
+
+    while (getUser(user, &p))
+    {
+        if (strcmp(p.name, username) == 0)
         {
             checker = 1;
-            userId = r.userId;
+            userId = p.id;
             break;
         }
     }
-    rewind(curr);
-
+    fclose(user);
+    
     if (checker == 0) 
     {
         fclose(curr);
