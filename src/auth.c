@@ -43,15 +43,26 @@ void registerUser(char a[100], char pass[100])
 {
     char buffer[100];
     system("clear");
+name:
     printf("\n\n\n\t\t\t\t   Bank Management System\n\t\t\t\t\t UserName:");
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
+    int len = strlen(buffer);
+    if (len == 0) {
+        printf("\n\t Please don't enter empty values\n\n");
+        goto name;
+    }
     sscanf(buffer,"%s",a);
 
-
+pass:
     printf("\n\n\n\n\n\t\t\t\tEnter your password:");
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
+    len = strlen(buffer);
+    if (len == 0) {
+        printf("\n\t Please don't enter empty values\n\n");
+        goto pass;
+    }
     sscanf(buffer,"%s",pass);
 
 
