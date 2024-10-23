@@ -37,6 +37,7 @@ const char *getPassword(struct User u);
 void registerUser(char a[100],  char pass[100]);
 const char *getUserName(struct User u);
 void saveUser(struct User *u);
+int getUser(FILE *ptr, struct User *u);
 
 // system function
 void createNewAcc(struct User u);
