@@ -185,3 +185,11 @@ void saveUser(struct User *u)
     fclose(fp);
 }
 
+int getUser(FILE *ptr, struct User *u)
+{
+    return fscanf(ptr, "%d %s %s ",
+            &u->id,
+		    u->name,
+		    u->password) != EOF;
+}
+
