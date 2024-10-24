@@ -34,8 +34,10 @@ void createNewAcc(struct User u)
 
 validDate:
     printf("\nEnter today's date(mm/dd/yyyy):");
-    scanf("%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
-    clearStdin();
+    fgets(initial,50,stdin);
+    checkBuffer(initial);
+    sscanf(initial,"%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
+
     if (checkValidDate(&r.deposit) == 1) 
     {
         printf("\n\n Please!! Enter a valid date\n\n");
@@ -60,7 +62,7 @@ validAccount:
 
     while (getAccountFromFile(pf, &cr))
     {
-        if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == r.accountNbr)
+        if (cr.accountNbr == r.accountNbr)
         {
             fclose(pf);
             stayOrReturn(0, "This Account number is already used", createNewAcc, u);

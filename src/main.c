@@ -2,6 +2,7 @@
 
 void mainMenu(struct User u)
 {
+begin:
     int option;
     system("clear");
     printf("\n\n\t\t======= ATM =======\n\n");
@@ -44,15 +45,18 @@ void mainMenu(struct User u)
         exit(1);
         break;
     default:
+        goto begin;
         printf("Invalid operation!\n");
     }
 };
 
 void initMenu(struct User *u)
 {
+    char initial[100];
     int r = 0;
     int option;
     system("clear");
+entry:
     printf("\n\n\t\t======= ATM =======\n");
     printf("\n\t\t-->> Feel free to login / register :\n");
     printf("\n\t\t[1]- login\n");
@@ -60,8 +64,15 @@ void initMenu(struct User *u)
     printf("\n\t\t[3]- exit\n");
     while (!r)
     {
-        scanf("%d", &option);
-        getchar();
+
+        fgets(initial,100,stdin);
+        checkBuffer(initial);
+        if (checkValidType(initial, "int") != 0)
+        {
+            printf("\n\t\t✖ Please!! Enter a valid option\n");
+            goto entry;
+        }
+        sscanf(initial, "%d", &option);
         switch (option)
         {
         case 1:
@@ -80,7 +91,8 @@ void initMenu(struct User *u)
             break;
         case 2:
             registerUser(u->name, u->password);
-            if (strcmp(u->name, getUserName(*u)) == 0) {
+            if (strcmp(u->name, getUserName(*u)) == 0)
+            {
                 printf("\n\nUser name already taken\n");
                 exit(1);
             }
