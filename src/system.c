@@ -38,7 +38,7 @@ validDate:
     checkBuffer(initial);
     sscanf(initial,"%d/%d/%d", &r.deposit.month, &r.deposit.day, &r.deposit.year);
 
-    if (checkValidDate(&r.deposit) == 1) 
+    if (checkValidDate(&r.deposit) == 1)
     {
         printf("\n\n Please!! Enter a valid date\n\n");
         goto validDate;
@@ -49,7 +49,7 @@ validAccount:
     printf("\nEnter the account number:");
     fgets(initial,50,stdin);
     checkBuffer(initial);
-    if (checkValidType(initial, "int") != 0) 
+    if (checkValidType(initial, "int") != 0)
     {
         printf("\n\t\t✖ Please!! Enter a valid account number, numbers only or positive numbers \n\n");
         goto validAccount;
@@ -73,7 +73,7 @@ validCountry:
     printf("\nEnter the country:");
     fgets(initial,50,stdin);
     checkBuffer(initial);
-    if (checkValidType(initial, "str") != 0) 
+    if (checkValidType(initial, "str") != 0)
     {
         printf("\n\t\t✖ Please!! Enter a valid country, don't include numbers or punctuation\n\n");
         goto validCountry;
@@ -85,7 +85,7 @@ validPhone:
     printf("\nEnter the phone number:");
     fgets(initial,50,stdin);
     checkBuffer(initial);
-    if (checkValidType(initial, "int") != 0) 
+    if (checkValidType(initial, "int") != 0)
     {
         printf("\n\t\t✖ Please!! Enter a valid phone-number, don't include letters or punctuation\n\n");
         goto validPhone;
@@ -101,7 +101,7 @@ validAmount:
     printf("\nEnter amount to deposit: $");
     fgets(initial,50,stdin);
     checkBuffer(initial);
-    if (checkValidType(initial, "flt") != 0) 
+    if (checkValidType(initial, "flt") != 0)
     {
         printf("\n\t\t✖ Please!! Enter a valid amount, don't use commas\n\n");
         goto validAmount;
@@ -116,7 +116,7 @@ validAccountType:
     printf("\nChoose the type of account:\n\t-> saving\n\t-> current\n\t-> fixed01(for 1 year)\n\t-> fixed02(for 2 years)\n\t-> fixed03(for 3 years)\n\n\tEnter your choice:");
     fgets(initial,50,stdin);
     checkBuffer(initial);
-    if (checkValidAccount(initial) != 0) 
+    if (checkValidAccount(initial) != 0)
     {
         printf("\n\t\t✖ Please!! Enter a valid option avaliable on the list\n\n");
         goto validAccountType;
@@ -127,7 +127,7 @@ validAccountType:
 
     r.userId = u.id;
     strncpy(r.name, u.name, sizeof(r.name) - 1);
-    r.name[sizeof(r.name) - 1] = '\0'; 
+    r.name[sizeof(r.name) - 1] = '\0';
     toLowerCase(r.accountType);
 
     saveAccountToFile(pf, &r);
@@ -178,7 +178,7 @@ void updateInfo(struct User u)
     int checker = 0;
     char buffer[100];
     FILE *curr, *temp;
-    
+
 
     system("clear");
     if ((curr = fopen(RECORDS, "r")) == NULL)
@@ -191,13 +191,13 @@ invalid:
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
 
-    if(checkValidType(buffer, "int")!= 0) 
+    if(checkValidType(buffer, "int")!= 0)
     {
         printf("\t\nPlease enter a valid option\n\n");
-        goto invalid;    
+        goto invalid;
     }
         sscanf(buffer,"%d", &account);
-    
+
     while (getAccountFromFile(curr, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account)
@@ -206,7 +206,7 @@ invalid:
             break;
         }
     }
-    
+
     rewind(curr);
     if (checker == 0)
     {
@@ -223,7 +223,7 @@ validOption:
     fgets(buffer,50,stdin);
     checkBuffer(buffer);
 
-    if (checkValidType(buffer,"int") != 0) 
+    if (checkValidType(buffer,"int") != 0)
     {
         printf("\n\tplease choose either 1 or 2 \n\n");
         goto validOption;
@@ -257,7 +257,7 @@ enterPhone:
         break;
     case 2:
 enterCountry:
-        printf("Enter your new country: ");     
+        printf("Enter your new country: ");
         fgets(buffer,100,stdin);
         checkBuffer(buffer);
 
@@ -283,14 +283,14 @@ enterCountry:
         {
             if(checker == 0) {
                 strncpy(cr.country, buffer, sizeof(cr.country) - 1);
-                cr.country[sizeof(cr.country) - 1] = '\0'; 
+                cr.country[sizeof(cr.country) - 1] = '\0';
             } else {
                 cr.phone = phone;
             }
         }
         saveAccountToFile(temp, &cr);
     }
-       
+
     fclose(curr);
     fclose(temp);
     remove(RECORDS);
@@ -299,7 +299,7 @@ enterCountry:
     success(u);
 }
 
-void removeAccount(struct User u) 
+void removeAccount(struct User u)
 {
     struct Record cr;
     FILE *curr, *temp;
@@ -334,7 +334,7 @@ enterAccount:
             break;
         }
     }
-    
+
     rewind(curr);
     if (checker == 0)
     {
@@ -349,7 +349,7 @@ enterAccount:
     printf("\tPhone number:%d\n", cr.phone);
     printf("\tAmount deposited:%.2f\n", cr.amount);
     printf("\tType Of Account:%s\n\n", cr.accountType);
-    
+
     if ((temp = fopen("./data/temp.txt", "w")) == NULL)
     {
         printf("Error! opening file");
@@ -369,7 +369,7 @@ enterAccount:
         }
         saveAccountToFile(temp, &cr);
     }
-       
+
     fclose(curr);
     fclose(temp);
     remove(RECORDS);
@@ -377,7 +377,7 @@ enterAccount:
     success(u);
 }
 
-void checkDetails(struct User u) 
+void checkDetails(struct User u)
 {
     struct Record cr;
     FILE *fp;
@@ -413,7 +413,7 @@ validAccount:
         }
     }
     rewind(fp);
-    if (checker == 0) 
+    if (checker == 0)
     {
         fclose(fp);
         stayOrReturn(0, "This account does not exist", checkDetails, u);
@@ -439,15 +439,15 @@ validAccount:
     {
         value = cr.amount * 0.04;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 1);
-    } else if (strcmp(cr.accountType, "fixed02") == 0) 
+    } else if (strcmp(cr.accountType, "fixed02") == 0)
     {
         value = (cr.amount * 0.05) * 2;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 2);
-    } else if (strcmp(cr.accountType, "fixed03") == 0) 
+    } else if (strcmp(cr.accountType, "fixed03") == 0)
     {
         value = (cr.amount * 0.08) * 3;
         printf("\tYou will get $%.2f as interest on  %d/%d/%d", value, cr.deposit.day,cr.deposit.month,cr.deposit.year + 3);
-    } else 
+    } else
     {
         printf("\tYour account %s is not known and will be treated as current\n", cr.accountType);
     }
@@ -461,7 +461,7 @@ void makeTransaction(struct User u)
     FILE *fp, *temp;
     int option;
     int account;
-    float amount;
+    double amount;
     int checker = 0;
 
     system("clear");
@@ -470,13 +470,13 @@ validac:
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
 
-    if(checkValidType(buffer, "int")!= 0) 
+    if(checkValidType(buffer, "int")!= 0)
     {
         printf("\t\nPlease enter a valid option\n\n");
         goto validac;
     }
     sscanf(buffer,"%d", &account);
-    
+
 
     if ((fp = fopen(RECORDS, "r")) == NULL)
     {
@@ -489,14 +489,14 @@ validac:
         {
             checker = 1;
             break;
-        } 
+        }
     }
     rewind(fp);
     if (checker == 0) {
         fclose(fp);
         stayOrReturn(0,"No account with that account number", makeTransaction, u);
     }
-    
+
     if (strcmp(cr.accountType, "fixed01") == 0 || strcmp(cr.accountType, "fixed02") == 0 || strcmp(cr.accountType, "fixed03") == 0)
     {
         fclose(fp);
@@ -508,13 +508,13 @@ option:
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
 
-    if(checkValidType(buffer, "int")!= 0) 
+    if(checkValidType(buffer, "int")!= 0)
     {
         printf("\t\nPlease enter a valid option\n\n");
         goto option;
     }
     sscanf(buffer,"%d", &option);
-    
+
     if (option != 1 && option != 2)
     {
         printf("\tPlease pick a valid option\n");
@@ -526,13 +526,13 @@ Amount:
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
 
-    if(checkValidType(buffer, "int")!= 0) 
+    if(checkValidType(buffer, "flt")!= 0)
     {
         printf("\t\nPlease enter a valid option\n\n");
         goto Amount;
     }
-    sscanf(buffer,"%f", &amount);
-    
+    sscanf(buffer,"%lf", &amount);
+
     if (option == 2 && amount > cr.amount){
         fclose(fp);
         stayOrReturn(0,"Not enough money to make this transcation", makeTransaction, u);
@@ -542,7 +542,7 @@ Amount:
         printf("Error! opening file");
         exit(1);
     }
-    while(getAccountFromFile(fp, &cr)) 
+    while(getAccountFromFile(fp, &cr))
     {
         if (strcmp(cr.name, u.name) == 0 && cr.accountNbr == account) {
             if (option == 1) {
@@ -556,13 +556,13 @@ Amount:
     fclose(fp);
     fclose(temp);
     remove(RECORDS);
-    rename("./data/temp.txt", RECORDS);   
+    rename("./data/temp.txt", RECORDS);
 
     success(u);
 
 }
 
-void transferOwner(struct User u) 
+void transferOwner(struct User u)
 {
     const char *USERS = "./data/users.txt";
     struct Record r;
@@ -580,13 +580,13 @@ validAcc:
     fgets(buffer,100,stdin);
     checkBuffer(buffer);
 
-    if(checkValidType(buffer, "int")!= 0) 
+    if(checkValidType(buffer, "int")!= 0)
     {
         printf("\t\nPlease enter a valid account number\n\n");
         goto validAcc;
     }
     sscanf(buffer,"%d", &account);
-    
+
     if ((curr = fopen(RECORDS, "r")) == NULL)
     {
         printf("Error! opening file");
@@ -619,7 +619,7 @@ validAcc:
     clearStdin();
 
     checker = 0;
-    if ((user = fopen(USERS,"r")) == NULL) 
+    if ((user = fopen(USERS,"r")) == NULL)
     {
         printf("Error! opening file");
         exit(1);
@@ -635,8 +635,8 @@ validAcc:
         }
     }
     fclose(user);
-    
-    if (checker == 0) 
+
+    if (checker == 0)
     {
         fclose(curr);
         stayOrReturn(0, "The user provided does not exist", transferOwner, u);
@@ -648,13 +648,13 @@ validAcc:
         exit(1);
     }
 
-    while (getAccountFromFile(curr, &r)) 
+    while (getAccountFromFile(curr, &r))
     {
-        if (strcmp(u.name, r.name) == 0 && r.accountNbr == account) 
+        if (strcmp(u.name, r.name) == 0 && r.accountNbr == account)
         {
             strncpy(r.name, username, sizeof(r.name) - 1);
             r.name[sizeof(r.name) - 1] = '\0';
-            r.userId = userId; 
+            r.userId = userId;
         }
         saveAccountToFile(temp, &r);
     }
